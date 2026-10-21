@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ahmet Değirmenci | Luxury Real Estate</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS (Canlı Bağlantı) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: '#00BAC6', /* Logonuzdaki Turkuaz */
+                        gold: '#D4AF37',  /* Logonuzdaki Altın */
+                        dark: '#0a0f1d',  /* Lüks Lacivert/Siyah Arkaplan */
+                    },
+                    fontFamily: {
+                        cinzel: ['Cinzel', 'serif'],
+                        body: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #0a0f1d; color: #f8fafc; }
+        .glass-panel { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(212, 175, 55, 0.3); }
+        .gold-text { background: linear-gradient(135deg, #D4AF37, #FFF, #D4AF37); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    </style>
+</head>
+<body class="font-body antialiased">
+
+    <!-- ÜST MENÜ (HEADER) -->
+    <header class="fixed w-full z-50 glass-panel border-b-0 border-gold/30">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <!-- LOGO AMBLEM BURAYA GELECEK -->
+                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-brand to-gold flex items-center justify-center font-cinzel font-bold text-dark text-xl">AD</div>
+                <div class="flex flex-col">
+                    <span class="font-cinzel text-lg font-bold tracking-widest text-white">AHMET DEĞİRMENCİ</span>
+                    <span class="text-[10px] tracking-[0.2em] text-brand uppercase">Luxury Real Estate</span>
+                </div>
+            </div>
+            <div class="hidden md:flex items-center gap-6">
+                <a href="#" class="hover:text-brand transition-colors">Portföy</a>
+                <a href="#" class="hover:text-brand transition-colors">Hakkımızda</a>
+                <a href="#" class="hover:text-brand transition-colors">İletişim</a>
+                <button onclick="document.getElementById('adminPanel').style.display='flex'" class="px-4 py-2 bg-brand text-dark font-bold rounded hover:bg-white transition-colors text-sm border border-gold">YÖNETİM GİRİŞİ</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ANA SAYFA VİTRİN -->
+    <section class="pt-32 pb-20 px-4 text-center max-w-5xl mx-auto">
+        <h1 class="font-cinzel text-4xl md:text-6xl font-bold mb-6 gold-text">Geleceğin Ayrıcalıklı Yaşam Alanları</h1>
+        <p class="text-xl text-gray-400 font-light italic mb-12">"En büyük değer insan. Lüks, hayata kattığı anlamda."</p>
+        
+        <!-- YÖNETİM PANELİNDEN EKLENEN İLANLARIN GÖRÜNECEĞİ YER -->
+        <div id="publicListings" class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+            <!-- İlanlar buraya dinamik yüklenecek -->
+        </div>
+    </section>
+
+    <!-- GİZLİ YÖNETİM PANELİ MODÜLÜ -->
+    <div id="adminPanel" class="fixed inset-0 bg-black/95 z-[100] hidden items-center justify-center p-4">
+        <div class="glass-panel w-full max-w-4xl rounded-xl p-8 max-h-[90vh] overflow-y-auto relative">
+            <button onclick="document.getElementById('adminPanel').style.display='none'" class="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl">&times;</button>
+            
+            <h2 class="font-cinzel text-2xl text-gold mb-6 border-b border-gold/20 pb-2">Kontrol Paneli: Yeni İlan Ekle</h2>
+            
+            <form id="addListingForm" onsubmit="saveListing(event)" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm text-gray-400 mb-1">İlan Başlığı (Türkçe)</label>
+                        <input type="text" id="title" required class="w-full bg-dark border border-gray-700 rounded p-2 text-white focus:border-brand outline-none" placeholder="Örn: Boğaz Manzaralı Yalı">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-400 mb-1">Fiyat (TL)</label>
+                        <input type="number" id="price" required class="w-full bg-dark border border-gray-700 rounded p-2 text-white focus:border-brand outline-none" placeholder="45000000">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-400 mb-1">Kategori</label>
+                        <select id="category" class="w-full bg-dark border border-gray-700 rounded p-2 text-white focus:border-brand outline-none">
+                            <option value="Villa">Villa / Yalı</option>
+                            <option value="Ticari">Ticari / Fabrika</option>
+                            <option value="Arsa">Yatırım Arazisi</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm text-brand mb-1">EİDS Yetki Belge No</label>
+                        <input type="text" id="eids" required class="w-full bg-dark border border-brand/50 rounded p-2 text-white focus:border-brand outline-none" placeholder="Örn: 1700434-001" value="1700434-">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-sm text-gray-400 mb-1">Kapak Fotoğrafı URL (Veya YouTube Linki)</label>
+                        <input type="text" id="image" class="w-full bg-dark border border-gray-700 rounded p-2 text-white focus:border-brand outline-none" placeholder="https://..." value="https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=800&q=80">
+                    </div>
+                </div>
+                <button type="submit" class="w-full mt-6 bg-brand text-dark font-bold py-3 rounded hover:bg-gold transition-colors">İlanı Kaydet ve Yayına Al</button>
+            </form>
+            
+            <h3 class="font-cinzel text-xl text-white mt-10 mb-4 border-b border-gray-700 pb-2">Paneldeki Mevcut İlanlar</h3>
+            <div id="adminListings" class="space-y-2"></div>
+        </div>
+    </div>
+
+    <script>
+        // Veritabanı Simülasyonu (Tarayıcı Hafızası)
+        let properties = JSON.parse(localStorage.getItem('ahmet_portfoy')) || [];
+
+        function renderListings() {
+            const publicDiv = document.getElementById('publicListings');
+            const adminDiv = document.getElementById('adminListings');
+            
+            publicDiv.innerHTML = '';
+            adminDiv.innerHTML = '';
+
+            properties.forEach((p, index) => {
+                // Ana Sayfa Görünümü
+                publicDiv.innerHTML += `
+                    <div class="glass-panel rounded-lg overflow-hidden border border-gray-800 hover:border-gold transition-all duration-300 relative">
+                        <div class="absolute top-2 right-2 bg-dark/90 text-brand text-[10px] px-2 py-1 rounded border border-brand/30 z-10">
+                            EİDS: ${p.eids}
+                        </div>
+                        <img src="${p.image}" class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h3 class="text-gold font-bold text-xl mb-1">${Number(p.price).toLocaleString('tr-TR')} ₺</h3>
+                            <h4 class="text-white font-medium truncate">${p.title}</h4>
+                            <p class="text-gray-400 text-sm mt-2">${p.category}</p>
+                        </div>
+                    </div>
+                `;
+                
+                // Panel Görünümü
+                adminDiv.innerHTML += `
+                    <div class="flex justify-between items-center bg-dark p-3 border border-gray-800 rounded">
+                        <span class="text-white">${p.title} - <span class="text-gold">${p.price} ₺</span></span>
+                        <button onclick="deleteListing(${index})" class="text-red-500 hover:text-red-400 text-sm">Sil</button>
+                    </div>
+                `;
+            });
+        }
+
+        function saveListing(e) {
+            e.preventDefault();
+            const newProp = {
+                title: document.getElementById('title').value,
+                price: document.getElementById('price').value,
+                category: document.getElementById('category').value,
+                eids: document.getElementById('eids').value,
+                image: document.getElementById('image').value
+            };
+            properties.push(newProp);
+            localStorage.setItem('ahmet_portfoy', JSON.stringify(properties));
+            renderListings();
+            document.getElementById('addListingForm').reset();
+            document.getElementById('eids').value = '1700434-'; // Sizin yetki numaranız sabit kalsın
+            alert("İlan başarıyla yayına alındı!");
+        }
+
+        function deleteListing(index) {
+            if(confirm("İlanı silmek istediğinize emin misiniz?")) {
+                properties.splice(index, 1);
+                localStorage.setItem('ahmet_portfoy', JSON.stringify(properties));
+                renderListings();
+            }
+        }
+
+        // Sayfa yüklendiğinde ilanları getir
+        renderListings();
+    </script>
+</body>
+</html>
